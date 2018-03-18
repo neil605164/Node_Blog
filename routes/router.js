@@ -8,6 +8,7 @@ var include = require('./include');
 // 3. 取檔案名稱 + 更改檔案名稱
 // 4. 定義新路徑（存放心檔案）
 // 5. 寫入新路徑
-router.post('/upload_file', function(req, res, next) { include.upload_file(req, res); });
+router.get('/', function (req,res) { res.render('index.pug') });
+router.post('/upload_file', include.upload_file);
 
 module.exports = router;
