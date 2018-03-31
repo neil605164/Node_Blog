@@ -11,5 +11,6 @@ var include = require('./include');
 router.get('/', function (req,res) { res.render('index.pug') });
 router.post('/register_member', include.register_member);
 router.post('/upload_file', include.upload_file);
+router.post('/edit_password', include.edit_password);
 
 module.exports = router;

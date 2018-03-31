@@ -10,6 +10,7 @@ module.exports = {
     register_member: register_member,
     vaild_username: vaild_username,
     vaild_password: vaild_password,
+    editPassword: editPassword,
 }
 
 /**
@@ -21,19 +22,53 @@ function register_member(data, callback) {
     let password = data.password;
     let account = data.username;
     let token = createNewToken(password);
+    let new_password = encryptionPassword(password)
     
-    let query = "INSERT INTO `userss` SET ?";
+    let query = "INSERT INTO `users` SET ?";
     let parameter = {
         username: account,
-        password: password,
+        password: new_password,
         serverkey: token
     }
 
-    classMain.getQueryResult(query, '', function(result) {
+    classMain.getQueryResult(query, parameter, function(result) {
         if(result.status === 'error'){
             return callback('10004')
         }
         callback(null);
+    })
+};
+
+
+function editPassword(data, callback) {
+    let username = data.username;
+    let password = data.password;
+    let query = 'SELECT `password` FROM `users` WHERE ?';
+    let parameter = {
+        username: username
+    }
+
+    classMain.getQueryResult(query, parameter, function(result) {
+        if(result.status === 'error'){
+            return callback('10005');
+        }
+        let new_password = encryptionPassword(password)
+
+        if(result.result[0].password === new_password) {
+            return callback('10006');
+        }
+
+        query = 'UPDATE `users` SET ?';
+        parameter = {
+            password: new_password
+        }
+
+        classMain.getQueryResult(query, parameter, function(result) {
+            if(result.status === 'error'){
+                return callback('10006');
+            }
+            callback(null);
+        })
     })
 };
 
@@ -70,7 +105,7 @@ function vaild_password(password) {
 }
 
 /**
- * 加密
+ * 建立token
  * @param {*} data 須加密的值
  */
 function createNewToken(data) {
@@ -80,4 +115,15 @@ function createNewToken(data) {
     let token = crypto.createHash('sha256').update(new_string).digest('hex');
 
     return token;
+}
+
+/**
+ * 加密
+ * @param {*} password 須加密的值
+ */
+function encryptionPassword(password) {
+    let new_string = 'qaswedQ' + password;
+    let new_password = crypto.createHash('sha256').update(new_string).digest('hex');
+
+    return new_password;
 }
