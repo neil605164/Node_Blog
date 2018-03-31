@@ -9,6 +9,7 @@ var include = require('./include');
 // 4. 定義新路徑（存放心檔案）
 // 5. 寫入新路徑
 router.get('/', function (req,res) { res.render('index.pug') });
+router.post('/register_member', include.register_member);
 router.post('/upload_file', include.upload_file);
 
 module.exports = router;

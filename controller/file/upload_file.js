@@ -4,7 +4,7 @@ var moment = require('moment');
 var formidable = require('formidable');
 
 function upload_file(req, res) {
-	var form = new formidable.IncomingForm();
+    var form = new formidable.IncomingForm();
     form.uploadDir = path.join('/home/hsieh/Node_Blog/', 'tmp');   //文件保存的临时目录为当前项目下的tmp文件夹
     form.maxFieldsSize = 100 * 1024 * 1024;  //用户头像大小限制为最大100M  
     form.keepExtensions = true;        //使用文件的原扩展名
@@ -31,7 +31,7 @@ function upload_file(req, res) {
 		}
 		
         var fileExt = filePath.substring(filePath.lastIndexOf('.'));
-        判断文件类型是否允许上传
+        // 判断文件类型是否允许上传
         if (('.jpg.jpeg.png.gif').indexOf(fileExt.toLowerCase()) === -1) {
             var err = new Error('此文件类型不允许上传');
             res.json({code:-1, message:'此文件类型不允许上传'});
@@ -42,6 +42,7 @@ function upload_file(req, res) {
             //移动文件
             fs.rename(filePath, targetFile, function (err) {
                 if (err) {
+
                     res.json({code:-1, message:'操作失败'});
                 } else {
                     //上传成功，返回文件的相对路径

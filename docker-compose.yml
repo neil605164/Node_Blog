@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  node-service:
+    image: node:latest
+    volumes: 
+      - .:/home/Node_Blog
+    ports:
+      - 3001:3001
+    depends_on:
+      - mysql-service
+    working_dir: /home/Node_Blog
+    command: node bin/www
+  mysql-service:
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: qwe123
+  adminer-service:
+    image: adminer:latest
+    ports:
+      - 8080:8080
