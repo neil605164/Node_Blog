@@ -39,7 +39,11 @@ function register_member(data, callback) {
     })
 };
 
-
+/**
+ * 更改密碼
+ * @param {*} data 前傳傳遞的值
+ * @param {*} callback 回傳錯誤代碼，或正確結果
+ */
 function editPassword(data, callback) {
     let username = data.username;
     let password = data.password;
